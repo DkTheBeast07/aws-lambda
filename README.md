@@ -9,7 +9,7 @@
 
 ---
 
-## 📌 Project Overview
+## 📌 Project OverviewT
 
 This project demonstrates a **fully serverless, event-driven data pipeline** built entirely on AWS Lambda. No servers. No manual steps. No CSV files needed.
 
@@ -82,7 +82,7 @@ Lambda 4 — Daily Reporter
 - **What it does:** Generates 10 random sales rows and uploads a CSV to S3
 - **Key concepts:** `boto3 S3 put_object`, CSV generation in memory, no file system needed
 - **Environment variables:**
-  - `SOURCE_BUCKET` = `sales-source-dillip`
+  - `SOURCE_BUCKET` = `sales-source-name`
 
 ---
 
@@ -103,7 +103,7 @@ Lambda 4 — Daily Reporter
 - **What it does:** Reads validated CSV from S3, transforms each row, saves to DynamoDB and writes processed JSON to destination S3
 - **Key concepts:** SQS batch trigger, DynamoDB `put_item`, data transformation, `total_amount` calculation
 - **Environment variables:**
-  - `DEST_BUCKET` = `sales-processed-dillip`
+  - `DEST_BUCKET` = `sales-processed-name`
   - `DYNAMO_TABLE` = `sales_records`
 
 ---
@@ -130,8 +130,8 @@ Lambda 4 — Daily Reporter
 
 | Resource | Name | Type |
 |---|---|---|
-| S3 Bucket (source) | `sales-source-dillip` | Amazon S3 |
-| S3 Bucket (destination) | `sales-processed-dillip` | Amazon S3 |
+| S3 Bucket (source) | `sales-source-name` | Amazon S3 |
+| S3 Bucket (destination) | `sales-processed-name` | Amazon S3 |
 | DynamoDB Table | `sales_records` | Partition key: `sale_id` (String) |
 | SQS Queue | `valid_files_queue` | Standard Queue |
 | SNS Topic | `sales_alerts` | Standard Topic |
@@ -221,8 +221,8 @@ REVENUE BY REGION          REVENUE BY PRODUCT
 ### Step 1 — Create Infrastructure
 
 ```
-S3 Bucket  : sales-source-dillip       (source)
-S3 Bucket  : sales-processed-dillip    (destination)
+S3 Bucket  : sales-source-name       (source)
+S3 Bucket  : sales-processed-name    (destination)
 DynamoDB   : sales_records             (partition key: sale_id)
 SQS Queue  : valid_files_queue         (Standard)
 SNS Topic  : sales_alerts              (subscribe your email)
@@ -234,7 +234,7 @@ Deploy all 5 functions with **Python 3.12** runtime. Add environment variables a
 ### Step 3 — Add Triggers
 
 ```
-Lambda 1 ← S3 trigger       (Bucket: sales-source-dillip, Prefix: raw/, Suffix: .csv)
+Lambda 1 ← S3 trigger       (Bucket: sales-source-name, Prefix: raw/, Suffix: .csv)
 Lambda 2 ← SQS trigger      (Queue: valid_files_queue, Batch size: 1)
 Lambda 3 ← DynamoDB Stream  (Table: sales_records, Starting position: Latest)
 Lambda 4 ← EventBridge      (cron(0 8 * * ? *))
@@ -247,7 +247,7 @@ Watch the pipeline fire automatically end to end! 🚀
 
 ### Step 5 — Verify Results
 - DynamoDB `sales_records` → 10 records written
-- S3 `sales-processed-dillip/processed/` → JSON file created
+- S3 `sales-processed-name/processed/` → JSON file created
 - CloudWatch `/aws/lambda/sales-audit-logger` → audit logs
 - Your email inbox → daily sales report
 
@@ -274,7 +274,7 @@ aws-lambda/
 
 ## 👨‍💻 Author
 
-**Dillip**
+**Kotesh**
 - Built on AWS Lambda (`ap-south-1`)
 - Completed as a hands-on AWS learning project
 - All infrastructure created manually via AWS Console
